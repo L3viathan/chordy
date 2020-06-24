@@ -16,7 +16,6 @@ class Span(Segment):
         self.chord = chord
 
     def __format__(self, code):
-        print("span:", code)
         return ("<{:%s}: {}>" % code).format(self.chord, self.text)
 
     def __len__(self):
@@ -72,8 +71,9 @@ def line_replacements(line):
     tokens = line.split(" ")
     out = []
     for token in tokens:
-        if out and (match := re.match(r"x(\d+)", token)):
-            out.extend([out[-1]] * (int(match.group(1)) - 1))
+        if out and (match := re.match(r"\(?(?:x(\d+)|(\d+)x)\)?", token)):
+            number = int(next(filter(bool, match.groups())))
+            out.extend([out[-1]] * (number - 1))
             continue
         out.append(token)
     return " ".join(out)

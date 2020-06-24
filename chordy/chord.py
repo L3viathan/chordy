@@ -94,7 +94,6 @@ class Chord:
         return ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
 
     def __format__(self, code):
-        print("chord:", code)
         if "#" in code:
             prefer = "#"
         elif "b" in code:
