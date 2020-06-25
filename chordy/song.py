@@ -61,6 +61,30 @@ class Song:
             io.write("\\end{%s}\n" % section.title)
         return io.getvalue()
 
+    def to_html(self):
+        return "\n".join([
+            "<html><head><style>",
+            """
+            .span {
+                line-height: 2em;
+                display: inline-flex;
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .chord {
+                top: -1.8em;
+            }
+
+            .span.empty {
+                margin-right: 0.5em;
+            }
+            """,
+            "</style></head><body>",
+            "".join(segment.to_html() for segment in self.segments),
+            "</body></html>",
+        ])
+
     def __getattr__(self, attr):
         if attr in Chord.exheritables:
 

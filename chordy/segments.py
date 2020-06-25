@@ -46,6 +46,19 @@ class Span(Segment):
             return r"^{%s}\empty " % self.chord.__format__(prefer or "")
         return self.text
 
+    def to_html(self, prefer=None):
+        return "".join(
+            [
+                "<span class='span{}'><span class='chord'>".format(
+                    " empty" if not self.text else ""
+                ),
+                self.chord.to_html(prefer=prefer) if self.chord else "&nbsp;",
+                "</span>",
+                (self.text or "").replace(" ", "&nbsp;"),
+                "</span>",
+            ]
+        )
+
 
 class Newline(Segment):
     def __repr__(self):
@@ -53,6 +66,9 @@ class Newline(Segment):
 
     def to_tex(self, **kwargs):
         return "\\\\\n"
+
+    def to_html(self, **kwargs):
+        return "<br>"
 
 
 class Section(Segment):
@@ -65,6 +81,9 @@ class Section(Segment):
 
     def to_tex(self, **kwargs):
         return "\\begin{%s}\n" % self.title.lower()
+
+    def to_html(self, **kwargs):
+        return f"<h3>{self.title}</h3>"
 
 
 def line_replacements(line):

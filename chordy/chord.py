@@ -86,12 +86,15 @@ class Chord:
         )
 
     @staticmethod
-    def note(number, prefer="b"):
+    def note(number, prefer="b", proper=False):
         if prefer == "b":
             return ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"][
                 number
             ]
-        return ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
+        the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
+        if proper:
+            the_note = the_note.replace("#", "♯")
+        return the_note
 
     def __format__(self, code):
         if "#" in code:
@@ -132,3 +135,17 @@ class Chord:
         if self.tone is None:
             return self
         return Chord(self.tone, minor=self.minor)
+
+    def to_html(self, prefer="b"):
+        if self.tone is None:
+            return "N.C."
+        parts = [self.note(self.tone, prefer=prefer, proper=True)]
+        if self.minor:
+            parts.append("m")
+        if self.modifiers:
+            parts.append("<sup>")
+            parts.append("".join(self.modifiers))
+            parts.append("</sup>")
+        if self.bass:
+            parts.append(f"/{self.note(self.bass, prefer=prefer, proper=True)}")
+        return "".join(parts)

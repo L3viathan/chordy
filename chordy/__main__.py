@@ -9,7 +9,7 @@ from .song import Song
     "--type",
     "-T",
     "type_",
-    type=click.Choice(["tex", "txt"]),
+    type=click.Choice(["tex", "txt", "html"]),
     help="What file type chordy should produce.",
     default="txt",
 )
@@ -40,6 +40,8 @@ def cli(file, type_, transpose, simplify, prefer):
         song = song.simplify()
     if type_ == "tex":
         print(song.to_tex())
+    elif type_ == "html":
+        print(song.to_html())
     else:
         print(song.to_monospace())
 
