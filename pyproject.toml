@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "chordy"
+version = "0.1.0"
+description = "Small library to work with chords and chord-annotated songs"
+authors = ["L3viathan <git@l3vi.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^7.1.2"
+regex = "^2020.6.8"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.15.0"
+ipdb = "^0.13.3"
+pytest = "^5.4.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
