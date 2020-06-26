@@ -5,16 +5,15 @@ from .chord import Chord
 
 
 class Song:
-    def __init__(self, title, segments, prefer=None):
+    def __init__(self, title, segments):
         self.title = title
         self.segments = segments
-        self.prefer = prefer
 
     @classmethod
     def from_file(cls, file, name=""):
         return cls(name, list(get_segments(file)))
 
-    def to_monospace(self):
+    def to_monospace(self, flags=""):
         io = StringIO()
 
         def flush_lines(cache):
@@ -23,7 +22,7 @@ class Song:
                 if last_chord_full_width:
                     io.write(" ")
                 if span.chord:
-                    the_str = ("{:%s}" % self.prefer).format(span.chord)
+                    the_str = ("{:%s}" % flags).format(span.chord)
                 else:
                     the_str = ""
                 io.write(the_str.ljust(len(span)))
@@ -48,7 +47,7 @@ class Song:
             flush_lines(line_cache)
         return io.getvalue()
 
-    def to_tex(self):
+    def to_tex(self, flags=""):
         io = StringIO()
         section = None
         for segment in self.segments:
@@ -56,12 +55,12 @@ class Song:
                 if section:
                     io.write("\\end{%s}\n" % section.title)
                 section = segment
-            io.write(segment.to_tex(prefer=self.prefer))
+            io.write(segment.to_tex(flags=flags))
         if section:
             io.write("\\end{%s}\n" % section.title)
         return io.getvalue()
 
-    def to_html(self):
+    def to_html(self, flags=""):
         return "\n".join([
             "<html><head><style>",
             """
@@ -81,7 +80,7 @@ class Song:
             }
             """,
             "</style></head><body>",
-            "".join(segment.to_html() for segment in self.segments),
+            "".join(segment.to_html(flags=flags) for segment in self.segments),
             "</body></html>",
         ])
 

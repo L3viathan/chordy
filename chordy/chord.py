@@ -86,39 +86,40 @@ class Chord:
         )
 
     @staticmethod
-    def note(number, prefer="b", proper=False):
-        if prefer == "b":
+    def note(number, flags=""):
+        if "b" in flags:
             return ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"][
                 number
             ]
         the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
-        if proper:
+        if "f" in flags:
             the_note = the_note.replace("#", "♯")
         return the_note
 
     def __format__(self, code):
-        if "#" in code:
-            prefer = "#"
-        elif "b" in code:
-            prefer = "b"
-        else:
-            prefer = None
+        return self.to_monospace(flags=code)
+
+    def to_monospace(self, flags=""):
         if self.tone is None:
             return "N.C."
         return "".join(
             [
-                self.note(self.tone, prefer=prefer),
+                self.note(self.tone, flags=flags),
                 "m" if self.minor else "",
                 "".join(self.modifiers),
-                f"/{self.note(self.bass, prefer=prefer)}" if self.bass else "",
+                f"/{self.note(self.bass, flags=flags)}" if self.bass else "",
             ]
         )
 
     def __repr__(self):
-        return "{}".format(self)
+        return self.to_monospace()
 
     def __len__(self):
-        return len(repr(self))
+        # approximate: flags can change length
+        return len(self.to_monospace())
+
+    def length(self, flags=""):
+        return len(self.to_monospace(flags=flags))
 
     def transpose(self, semitones):
         if self.tone is None:
@@ -136,10 +137,12 @@ class Chord:
             return self
         return Chord(self.tone, minor=self.minor)
 
-    def to_html(self, prefer="b"):
+    def to_html(self, flags=""):
         if self.tone is None:
             return "N.C."
-        parts = [self.note(self.tone, prefer=prefer, proper=True)]
+        if "F" not in flags:
+            flags += "f"
+        parts = [self.note(self.tone, flags=flags)]
         if self.minor:
             parts.append("m")
         if self.modifiers:
@@ -147,5 +150,5 @@ class Chord:
             parts.append("".join(self.modifiers))
             parts.append("</sup>")
         if self.bass:
-            parts.append(f"/{self.note(self.bass, prefer=prefer, proper=True)}")
+            parts.append(f"/{self.note(self.bass, flags=flags)}")
         return "".join(parts)

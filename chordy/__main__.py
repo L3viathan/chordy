@@ -20,30 +20,31 @@ from .song import Song
     "--simplify", "-s", is_flag=True, help="Whether to simplify the chords",
 )
 @click.option(
+    "--flags", "-f", type=str, help="Sequence of 1-letter display codes", default=""
+)
+@click.option(
     "--prefer",
     "-p",
     help="Whether to prefer b/♭ or #/♯",
     type=click.Choice(["b", "#", "♯", "♭", "flat", "sharp"]),
 )
-def cli(file, type_, transpose, simplify, prefer):
+def cli(file, type_, transpose, simplify, flags, prefer):
     """
     Convert a UG-style chord file into PDF/normalized chords.
     """
     song = Song.from_file(file)
     if prefer:
-        song.prefer = {"♯": "#", "♭": "b", "flat": "b", "sharp": "#"}.get(
-            prefer, prefer
-        )
+        flags += {"♯": "#", "♭": "b", "flat": "b", "sharp": "#"}.get(prefer, prefer)
     if transpose:
         song = song.transpose(transpose)
     if simplify:
         song = song.simplify()
     if type_ == "tex":
-        print(song.to_tex())
+        print(song.to_tex(flags=flags))
     elif type_ == "html":
-        print(song.to_html())
+        print(song.to_html(flags=flags))
     else:
-        print(song.to_monospace())
+        print(song.to_monospace(flags=flags))
 
 
 if __name__ == "__main__":

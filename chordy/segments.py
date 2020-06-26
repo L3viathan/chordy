@@ -39,20 +39,20 @@ class Span(Segment):
             f"'{self.__class__.__name__} object has no attribute '{attr}'"
         )
 
-    def to_tex(self, prefer=None):
+    def to_tex(self, flags=""):
         if self.chord:
             if self.text:
-                return r"^{%s}%s" % (self.chord.__format__(prefer or ""), self.text)
-            return r"^{%s}\empty " % self.chord.__format__(prefer or "")
+                return r"^{%s}%s" % (self.chord.to_monospace(flags=flags), self.text)
+            return r"^{%s}\empty " % self.chord.to_monospace(flags=flags)
         return self.text
 
-    def to_html(self, prefer=None):
+    def to_html(self, flags=""):
         return "".join(
             [
                 "<span class='span{}'><span class='chord'>".format(
                     " empty" if not self.text else ""
                 ),
-                self.chord.to_html(prefer=prefer) if self.chord else "&nbsp;",
+                self.chord.to_html(flags=flags) if self.chord else "&nbsp;",
                 "</span>",
                 (self.text or "").replace(" ", "&nbsp;"),
                 "</span>",
