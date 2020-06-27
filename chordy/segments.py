@@ -128,6 +128,8 @@ def line_type(line):
         if type_ == "ambiguous":
             type_ = "chord"
         return type_
+    elif "word" in types:
+        return "word"
     return "/".join(types)
 
 
