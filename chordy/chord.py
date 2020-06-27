@@ -107,7 +107,7 @@ class Chord:
                 self.note(self.tone, flags=flags),
                 "m" if self.minor else "",
                 "".join(self.modifiers),
-                f"/{self.note(self.bass, flags=flags)}" if self.bass else "",
+                f"/{self.note(self.bass, flags=flags)}" if self.bass is not None else "",
             ]
         )
 
@@ -149,6 +149,6 @@ class Chord:
             parts.append("<sup>")
             parts.append("".join(self.modifiers))
             parts.append("</sup>")
-        if self.bass:
+        if self.bass is not None:
             parts.append(f"/{self.note(self.bass, flags=flags)}")
         return "".join(parts)
