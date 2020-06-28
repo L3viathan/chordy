@@ -93,10 +93,11 @@ class Chord:
     @staticmethod
     def note(number, flags=""):
         if "b" in flags:
-            return ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"][
+            the_note = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"][
                 number
             ]
-        the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
+        else:
+            the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
         if "f" in flags:
             the_note = the_note.replace("#", "♯").replace("b", "♭")
         return the_note
