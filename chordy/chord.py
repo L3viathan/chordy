@@ -4,6 +4,7 @@ import regex as re
 class KrautException(Exception):
     pass
 
+
 class AmbiguousChord(Exception):
     pass
 
@@ -93,11 +94,35 @@ class Chord:
     @staticmethod
     def note(number, flags=""):
         if "b" in flags:
-            the_note = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"][
-                number
-            ]
+            the_note = [
+                "C",
+                "Db",
+                "D",
+                "Eb",
+                "E",
+                "F",
+                "Gb",
+                "G",
+                "Ab",
+                "A",
+                "Bb",
+                "B",
+            ][number]
         else:
-            the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
+            the_note = [
+                "C",
+                "C#",
+                "D",
+                "D#",
+                "E",
+                "F",
+                "F#",
+                "G",
+                "G#",
+                "A",
+                "A#",
+                "B",
+            ][number]
         if "f" in flags:
             the_note = the_note.replace("#", "♯").replace("b", "♭")
         return the_note
@@ -113,7 +138,9 @@ class Chord:
                 self.note(self.tone, flags=flags),
                 "m" if self.minor else "",
                 "".join(self.modifiers),
-                f"/{self.note(self.bass, flags=flags)}" if self.bass is not None else "",
+                f"/{self.note(self.bass, flags=flags)}"
+                if self.bass is not None
+                else "",
             ]
         )
 
@@ -148,7 +175,11 @@ class Chord:
             return "N.C."
         if "F" not in flags:
             flags += "f"
-        parts = [self.note(self.tone, flags=flags)]
+        parts = [
+            self.note(self.tone, flags=flags).replace(
+                "♭", "<span class='bhack'>♭</span>"
+            )
+        ]
         if self.minor:
             parts.append("m")
         if self.modifiers:

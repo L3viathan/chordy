@@ -82,6 +82,11 @@ class Song:
             .span.empty {
                 margin-right: 0.5em;
             }
+            .bhack {
+                position: relative;
+                left: -4px;
+                letter-spacing: -7px;
+            }
             """,
             "</style></head><body>",
             "".join(segment.to_html(flags=flags) for segment in self.segments),
