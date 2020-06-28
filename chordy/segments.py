@@ -133,7 +133,7 @@ def line_type(line):
     return "/".join(types)
 
 
-def spans_from_single(line, ltype):
+def spans_from_single(line, ltype, german=False):
     if ltype == "word":
         # FIXME keep previous chord?
         # but not fixing this probably doesn't hurt
@@ -142,7 +142,7 @@ def spans_from_single(line, ltype):
         for chord in line.split(" "):
             if not chord:
                 continue
-            yield Span(text=None, chord=Chord.from_string(chord))
+            yield Span(text=None, chord=Chord.from_string(chord, german=german))
     elif ltype == "empty":
         pass
     elif ltype == "meta":
@@ -151,7 +151,7 @@ def spans_from_single(line, ltype):
         raise NotImplementedError(line, ltype)
 
 
-def spans_from_pair(cline, tline):
+def spans_from_pair(cline, tline, german=False):
     spans = []
     cur_chord = None
     text = []
@@ -165,7 +165,7 @@ def spans_from_pair(cline, tline):
             cur_chord = None
             text = []
             continue
-        cur_chord = Chord.from_string(cstr)
+        cur_chord = Chord.from_string(cstr, german=german)
         text.extend(tline[:clen])
         tline = tline[clen:]
     if text or cur_chord:
@@ -175,7 +175,7 @@ def spans_from_pair(cline, tline):
     yield from spans
 
 
-def get_segments(lines):
+def get_segments(lines, german=False):
     prev = None
     for line in lines:
         line = line.rstrip("\n") + " "
@@ -186,13 +186,13 @@ def get_segments(lines):
             continue
         pline, ptype = prev
         if ptype == "chord" and ltype == "word":
-            yield from spans_from_pair(pline, line)
+            yield from spans_from_pair(pline, line, german=german)
             yield Newline()
             prev = None
             continue
-        yield from spans_from_single(pline, ptype)
+        yield from spans_from_single(pline, ptype, german=german)
         yield Newline()
         prev = line, ltype
     if prev is not None:
-        yield from spans_from_single(*prev)
+        yield from spans_from_single(*prev, german=german)
         yield Newline()

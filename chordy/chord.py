@@ -4,6 +4,9 @@ import regex as re
 class KrautException(Exception):
     pass
 
+class AmbiguousChord(Exception):
+    pass
+
 
 def note_to_number(note, shift, german=False):
     if note is None:
@@ -12,6 +15,8 @@ def note_to_number(note, shift, german=False):
         if note == "H":
             note = "B"
         elif note == "B":
+            if shift == "b":
+                raise AmbiguousChord
             shift = "b"
     number = ["C", 0, "D", 0, "E", "F", 0, "G", 0, "A", 0, "B"].index(note.upper())
     if shift:

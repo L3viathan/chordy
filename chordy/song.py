@@ -1,7 +1,7 @@
 from io import StringIO
 
 from .segments import get_segments, Newline, Span, Section
-from .chord import Chord
+from .chord import Chord, KrautException
 
 
 class Song:
@@ -11,7 +11,10 @@ class Song:
 
     @classmethod
     def from_file(cls, file, name=""):
-        return cls(name, list(get_segments(file)))
+        try:
+            return cls(name, list(get_segments(file)))
+        except KrautException:
+            return cls(name, list(get_segments(file, german=True)))
 
     def to_monospace(self, flags=""):
         io = StringIO()
