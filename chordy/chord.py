@@ -98,7 +98,7 @@ class Chord:
             ]
         the_note = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][number]
         if "f" in flags:
-            the_note = the_note.replace("#", "♯")
+            the_note = the_note.replace("#", "♯").replace("b", "♭")
         return the_note
 
     def __format__(self, code):
