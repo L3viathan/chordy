@@ -11,10 +11,11 @@ class Song:
 
     @classmethod
     def from_file(cls, file, name=""):
+        lines = list(file)
         try:
-            return cls(name, list(get_segments(file)))
+            return cls(name, list(get_segments(lines)))
         except KrautException:
-            return cls(name, list(get_segments(file, german=True)))
+            return cls(name, list(get_segments(lines, german=True)))
 
     def to_monospace(self, flags=""):
         io = StringIO()
