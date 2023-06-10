@@ -1,6 +1,6 @@
 import click
 
-from .song import Song
+from chordy.song import Song
 
 
 @click.command()

@@ -26,7 +26,7 @@ def note_to_number(note, shift, german=False):
 
 
 def normalize_modifiers(modifiers):
-    return [{"+": "aug"}.get(mod, mod) for mod in modifiers]
+    return [{"+": "aug", "°": "dim"}.get(mod, mod) for mod in modifiers]
 
 
 CHORD = re.compile(
@@ -39,7 +39,7 @@ CHORD = re.compile(
       \(?
       (?P<modifiers>
         sus[24]?                            # suspended chord
-      | dim                                 # diminished chord
+      | (?:dim|°)                           # diminished chord
       | (?:aug|\+)                          # augmented chord
       | (?:\#|b|no|-|[mM]aj|M|add)?(?:\d+)  # regular/b'd added tone
       | M                                   # major 7, I guess...
