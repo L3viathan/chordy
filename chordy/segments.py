@@ -87,7 +87,7 @@ class Section(Segment):
         # return "SECTION\n"
 
     def to_tex(self, **kwargs):
-        return "\\subsection*{%s}\n" % self.envname
+        return "\\begin{%s}\n" % self.envname
 
     def to_html(self, **kwargs):
         return f"<h3>{self.title}</h3>"
