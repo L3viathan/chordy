@@ -1,4 +1,5 @@
 from io import StringIO
+from textwrap import dedent
 
 from .segments import get_segments, Newline, Span, Section
 from .chord import Chord, KrautException
@@ -53,15 +54,28 @@ class Song:
 
     def to_tex(self, flags=""):
         io = StringIO()
+        io.write(dedent(
+            r"""
+            \documentclass{article}
+            \usepackage{leadsheets}
+            \begin{song}{title={%s}}
+            """.lstrip() % self.title
+        ))
         section = None
         for segment in self.segments:
             if isinstance(segment, Section):
                 if section:
-                    io.write("\\end{%s}\n" % section.title)
+                    io.write("\\end{%s}\n" % section.envname)
                 section = segment
             io.write(segment.to_tex(flags=flags))
         if section:
             io.write("\\end{%s}\n" % section.title)
+        io.write(dedent(
+            r"""
+            \end{song}
+            \end{document}
+            """.lstrip()
+        ))
         return io.getvalue()
 
     def to_html(self, flags=""):

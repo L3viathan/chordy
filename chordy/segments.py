@@ -75,12 +75,19 @@ class Section(Segment):
     def __init__(self, title):
         self.title = title
 
+    @property
+    def envname(self):
+        title = self.title.rstrip(" 1234567890:").lower()
+        if title in ("verse", "chorus", "intro", "interlude", "bridge"):
+            return title
+        return "verse*"
+
     def __repr__(self):
         return f"[{self.title}]\n"
         # return "SECTION\n"
 
     def to_tex(self, **kwargs):
-        return "\\begin{%s}\n" % self.title.lower()
+        return "\\subsection*{%s}\n" % self.envname
 
     def to_html(self, **kwargs):
         return f"<h3>{self.title}</h3>"
