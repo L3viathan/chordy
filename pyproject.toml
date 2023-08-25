@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chordy"
-version = "0.5.4"
+version = "0.6.0"
 description = "Small library to work with chords and chord-annotated songs"
 authors = ["L3viathan <git@l3vi.de>"]
 license = "MIT"
