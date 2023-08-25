@@ -58,8 +58,9 @@ class Song:
             r"""
             \documentclass{article}
             \usepackage{leadsheets}
+            \begin{document}
             \begin{song}{title={%s}}
-            """.lstrip() % self.title
+            """[1:] % self.title
         ))
         section = None
         for segment in self.segments:
