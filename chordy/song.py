@@ -70,7 +70,7 @@ class Song:
                 section = segment
             io.write(segment.to_tex(flags=flags))
         if section:
-            io.write("\\end{%s}\n" % section.title)
+            io.write("\\end{%s}\n" % section.envname)
         io.write(dedent(
             r"""
             \end{song}
