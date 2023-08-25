@@ -43,7 +43,7 @@ class Span(Segment):
         if self.chord:
             if self.text:
                 return r"^{%s}%s" % (self.chord.to_monospace(flags=flags), self.text)
-            return r"^{%s}\empty " % self.chord.to_monospace(flags=flags)
+            return r"^{%s} {} " % self.chord.to_monospace(flags=flags)
         return self.text
 
     def to_html(self, flags=""):

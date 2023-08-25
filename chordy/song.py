@@ -1,6 +1,8 @@
 from io import StringIO
 from textwrap import dedent
 
+import regex
+
 from .segments import get_segments, Newline, Span, Section
 from .chord import Chord, KrautException
 
@@ -77,7 +79,12 @@ class Song:
             \end{document}
             """.lstrip()
         ))
-        return io.getvalue()
+        document = io.getvalue()
+        # remove extra backslashes at beginning of sections (cosmetic)
+        document = regex.sub(r"\\begin\{(.*?)\}(\s|\\\\)+", r"\\begin{\1}\n", document)
+        # remove extra backslashes at end of sections (necessary)
+        document = regex.sub(r"[\s\\]+\\end\{(.*?)\}", r"\n\\end{\1}", document)
+        return document
 
     def to_html(self, flags=""):
         return "\n".join([
