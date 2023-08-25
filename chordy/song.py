@@ -61,6 +61,7 @@ class Song:
             \documentclass{article}
             \usepackage{leadsheets}
             \begin{document}
+            %%SONG
             \begin{song}{title={%s}}
             """[1:] % self.title
         ))
@@ -76,6 +77,7 @@ class Song:
         io.write(dedent(
             r"""
             \end{song}
+            %ENDSONG
             \end{document}
             """.lstrip()
         ))
